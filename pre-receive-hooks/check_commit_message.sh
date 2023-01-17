@@ -10,8 +10,11 @@ msg_regex='^[A-Z]+\-[0-9]+: '
 
 while read -r oldrev newrev refname; do
 
-	# Branch or tag got deleted, ignore the push
+    # Branch or tag got deleted, ignore the push
     [ "$newrev" = "$zero_commit" ] && continue
+
+    # Check only pushes on main branch
+    [ "${refname#refs/heads/}" = "main" ] && continue
 
     # Calculate range for new branch/updated branch
     [ "$oldrev" = "$zero_commit" ] && range="$newrev" || range="$oldrev..$newrev"
