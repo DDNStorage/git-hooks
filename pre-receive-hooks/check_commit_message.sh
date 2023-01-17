@@ -13,7 +13,6 @@ while read -r oldrev newrev refname; do
     # Branch or tag got deleted, ignore the push
     [ "$newrev" = "$zero_commit" ] && continue
 
-    echo "REFNAME: ${refname}"
     # Check only pushes on main branch
     [ "${refname#refs/heads/}" != "main" ] && continue
 
