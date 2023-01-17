@@ -15,7 +15,7 @@ while read -r oldrev newrev refname; do
 
     echo "REFNAME: ${refname}"
     # Check only pushes on main branch
-    [ "${refname#refs/heads/}" = "main" ] && continue
+    [ "${refname#refs/heads/}" != "main" ] && continue
 
     # Calculate range for new branch/updated branch
     [ "$oldrev" = "$zero_commit" ] && range="$newrev" || range="$oldrev..$newrev"
