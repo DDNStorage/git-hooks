@@ -27,6 +27,10 @@ zero_commit='0000000000000000000000000000000000000000'
 # For commit description, inverted check i.e.
 # If there is a line with length >= 73 characters, raise an error
 
+# skip feature
+# git push -o skip_commit_check=true
+#
+# will bypass checks
 if [ "$GIT_PUSH_OPTION_0" = "skip_commit_check=true" ]; then
   echo "SKIPPING COMMIT CHECKS !!"
   exit 0
