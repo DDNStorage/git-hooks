@@ -20,7 +20,7 @@ zero_commit='0000000000000000000000000000000000000000'
 # - RED-45:title, missing space
 # - RED-45(): missing scope in parenthesis
 
-msg_regex='^[A-Z]+\-[0-9]+(\([a-zA-Z]+\))?: '
+msg_regex='^(?=.{2,72}$)[A-Z]+\-[0-9]+(\([a-zA-Z]+\))?: '
 
 while read -r oldrev newrev refname; do
 
@@ -34,7 +34,7 @@ while read -r oldrev newrev refname; do
     [ "$oldrev" = "$zero_commit" ] && range="$newrev" || range="$oldrev..$newrev"
 
 	for commit in $(git rev-list "$range" --not --all); do
-		if ! git log --max-count=1 --format=%B $commit | grep -iqE "$msg_regex"; then
+		if ! git log --max-count=1 --format=%B $commit | grep -qP "$msg_regex"; then
 			echo "ERROR:"
 			echo "ERROR: Your push was rejected because the commit"
 			echo "ERROR: $commit in ${refname#refs/heads/}"
@@ -46,5 +46,4 @@ while read -r oldrev newrev refname; do
 			exit 1
 		fi
 	done
-
 done
