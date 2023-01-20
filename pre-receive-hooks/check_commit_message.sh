@@ -27,6 +27,11 @@ zero_commit='0000000000000000000000000000000000000000'
 # For commit description, inverted check i.e.
 # If there is a line with length >= 73 characters, raise an error
 
+if [ "$GIT_PUSH_OPTION_0" = "skip_commit_check=true" ]; then
+  echo "SKIPPING COMMIT CHECKS !!"
+  exit 0
+fi
+
 title_regex='^(?=.{2,50}$)[A-Z]+\-[0-9]+(!)?(\([a-zA-Z]+\))?: '
 description_line_length_regex='^.{73,}$'
 
