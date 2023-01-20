@@ -70,6 +70,3 @@ while read -r oldrev newrev refname; do
 		fi
 	done
 done
-
-echo "Error: Reach end without exiting"
-exit 1
