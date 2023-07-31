@@ -49,8 +49,8 @@ while read -r oldrev newrev refname; do
 	for commit in $(git rev-list "$range" --not --all); do
 	  # Check title
 	  if ! git log --max-count=1 --format=%s $commit | grep -qP "$title_regex"; then
-      echo "ERROR:"
-      echo "ERROR: Your push was rejected because the commit"
+      echo >&2 "ERROR:"
+      echo "ERROR: :D Your push was rejected because the commit"
       echo "ERROR: $commit in ${refname#refs/heads/}"
       echo "ERROR: does not follow our commit conventions. (problem in the title)."
       echo "ERROR: See https://github.red.datadirectnet.com/devops/git-hooks for details"
