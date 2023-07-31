@@ -33,7 +33,7 @@ if [ "$GIT_PUSH_OPTION_0" = "skip_commit_check=true" ]; then
   exit 0
 fi
 
-title_regex='^(?=.{2,100}$)[A-Z]+\-[0-9]+(!)?(\([a-zA-Z]+\))?: '
+title_regex='^((RED|REDQAS|REDOPS|REDDVOPS)\-[0-9]+)(!)?: (\{[a-zA-Z]+\})?'
 
 while read -r oldrev newrev refname; do
 
