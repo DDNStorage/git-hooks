@@ -49,14 +49,12 @@ while read -r oldrev newrev refname; do
 	for commit in $(git rev-list "$range" --not --all); do
 	  # Check title
 	  if ! git log --max-count=1 --format=%s $commit | grep -qP "$title_regex"; then
-      echo >&2 "ERROR:"
-      echo "ERROR: :D Your push was rejected because the commit"
-      echo "ERROR: $commit in ${refname#refs/heads/}"
+      echo "ERROR:"
+      echo "ERROR: Your push was rejected because the commit message"
       echo "ERROR: does not follow our commit conventions. (problem in the title)."
       echo "ERROR: See https://github.red.datadirectnet.com/devops/git-hooks for details"
       echo "ERROR:"
-      echo "ERROR: Please fix the commit message and push again."
-      echo "ERROR: https://help.github.com/en/articles/changing-a-commit-message"
+      echo "ERROR: Refresh this page, fix the commit message and push again."
       echo "ERROR"
       exit 1
     fi
