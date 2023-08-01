@@ -32,12 +32,16 @@ RED-45: {} brackets with empty content
 
 ## Troubleshooting
 ![Error message](doc/error_msg.png "Error message shown commit message is not compliant")
-You should see this error popup if your commit message is wrong. What you have to do is refresh your browser page (`F5`)
+
+You should see this error popup if you tried to merge your PR and your commit message is wrong. What you have to do is refresh your browser page (`F5`)
 to go back to this situation:
 ![attempt merge](doc/attempt_merge.png "Squash and Merge dialog")
+
 Click on `Squash and merge` button, to see next dialog:
 ![change message](doc/change_msg.png "Fix you commit message")
+
 Fix you commit message and click `Attempt squash and merge` button.
 ![valid message](doc/valid_msg.png "Valid commit message")
+
 If your commit message is valid, PR will be merge.
 Otherwise, you will have to do that process again until message is correct.
