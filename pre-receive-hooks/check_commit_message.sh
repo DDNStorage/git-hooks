@@ -34,6 +34,7 @@ if [ "$GIT_PUSH_OPTION_0" = "skip_commit_check=true" ]; then
 fi
 
 title_regex='^((RED|REDQAS|REDOPS|REDDVOPS)\-[0-9]+)(!)?: (\{[a-zA-Z]+\})?'
+revert_title_regex='^Revert "((RED|REDQAS|REDOPS|REDDVOPS)\-[0-9]+)'
 
 while read -r oldrev newrev refname; do
 
@@ -49,15 +50,17 @@ while read -r oldrev newrev refname; do
 	for commit in $(git rev-list "$range" --not --all); do
 	  # Check title
 	  if ! git log --max-count=1 --format=%s $commit | grep -qP "$title_regex"; then
-      echo "ERROR:"
-      echo "ERROR: Your push was rejected because the commit message"
-      echo "ERROR: does not follow our commit conventions. (problem in the title)."
-      echo "ERROR:"
-      echo "ERROR: See https://github.red.datadirectnet.com/red/git-hooks for details"
-      echo "ERROR:"
-      echo "ERROR: Refresh this page, fix the commit message and push again."
-      echo "ERROR"
-      exit 1
+	    if ! git log --max-count=1 --format=%s $commit | grep -qP "$revert_title_regex"; then
+        echo "ERROR:"
+        echo "ERROR: Your push was rejected because the commit message"
+        echo "ERROR: does not follow our commit conventions. (problem in the title)."
+        echo "ERROR:"
+        echo "ERROR: See https://github.red.datadirectnet.com/red/git-hooks for details"
+        echo "ERROR:"
+        echo "ERROR: Refresh this page, fix the commit message and push again."
+        echo "ERROR"
+        exit 1
+      fi
     fi
 	done
 done

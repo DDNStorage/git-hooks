@@ -30,6 +30,14 @@ RED-45:title, missing space
 RED-45: {} brackets with empty content
 ```
 
+For revert commits, message should begin as follow:
+```
+Revert "RED-1234 ....
+```
+- `Revert` word followed by
+- ` "` **space** + quotes followed by
+- reverted JIRA ticket ref
+
 ## Troubleshooting
 ![Error message](doc/error_msg.png "Error message shown commit message is not compliant")
 
