@@ -47,7 +47,7 @@ while read -r oldrev newrev refname; do
     # Calculate range for new branch/updated branch
     [ "$oldrev" = "$zero_commit" ] && range="$newrev" || range="$oldrev..$newrev"
 
-	for commit in $(git rev-list "$range" --not --all); do
+	for commit in $(git rev-list "$range"); do
 	  # Check title
 	  if ! git log --max-count=1 --format=%s $commit | grep -qP "$title_regex"; then
 	    if ! git log --max-count=1 --format=%s $commit | grep -qP "$revert_title_regex"; then
