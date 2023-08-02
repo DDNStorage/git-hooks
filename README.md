@@ -13,7 +13,7 @@ Try to follow RED convention. What is implemented?
 #### For the commit title line
 - must begin with a Jira ticket ref, in uppercase, like `RED-2312` (supported projects are RED, REDQAS, REDOPS, REDDVOPS) followed by
 - optional `!` to notify that the commit introduce breaking changes, followed by
-- colon + **space** `:&nbsp;`, followed by
+- colon + **space** `: `, followed by
 - optional scope in brackets, like `{docs}` or `{redsetup, redapi}`, followed by
 - your commit title
 
