@@ -52,12 +52,16 @@ while read -r oldrev newrev refname; do
 	  if ! git log --max-count=1 --format=%s $commit | grep -qP "$title_regex"; then
 	    if ! git log --max-count=1 --format=%s $commit | grep -qP "$revert_title_regex"; then
         echo "ERROR:"
-        echo "ERROR: Your push was rejected because the commit message"
+        echo "ERROR: Your push was rejected because the commit"
+        echo "ERROR: $commit in ${refname#refs/heads/}"
         echo "ERROR: does not follow our commit conventions. (problem in the title)."
         echo "ERROR:"
         echo "ERROR: See https://github.red.datadirectnet.com/red/git-hooks for details"
         echo "ERROR:"
-        echo "ERROR: Refresh this page, fix the commit message and push again."
+        echo "ERROR: If you are using 'Rebase and merge' option, ALL commits must follow the convention"
+        echo "ERROR: Otherwise"
+        echo "ERROR:   - refresh this page, use 'Squash and merge' option"
+        echo "ERROR:   - fix the commit message and push again."
         echo "ERROR"
         exit 1
       fi
