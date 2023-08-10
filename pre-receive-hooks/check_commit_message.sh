@@ -28,6 +28,11 @@ zero_commit='0000000000000000000000000000000000000000'
 # git push -o skip_commit_check=true
 #
 # will bypass checks
+
+# Duplicate lines in the extended commit description.
+# External email IDs outside of the allowed domains (@ddn.com and @tintri.com).
+# Spelling mistakes using aspell.
+
 if [ "$GIT_PUSH_OPTION_0" = "skip_commit_check=true" ]; then
   echo "SKIPPING COMMIT CHECKS !!"
   exit 0
@@ -35,6 +40,11 @@ fi
 
 title_regex='^((RED|REDQAS|REDOPS|REDDVOPS)\-[0-9]+)(!)?: (\{[a-zA-Z]+\})?'
 revert_title_regex='^Revert "((RED|REDQAS|REDOPS|REDDVOPS)\-[0-9]+)'
+
+# External email ID regex
+external_email_regex='[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}'
+# Allowed email domains
+allowed_email_regex='[a-zA-Z0-9._%+-]+@(ddn\.com|tintri\.com)'
 
 while read -r oldrev newrev refname; do
 
@@ -48,9 +58,12 @@ while read -r oldrev newrev refname; do
     [ "$oldrev" = "$zero_commit" ] && range="$newrev" || range="$oldrev..$newrev"
 
 	for commit in $(git rev-list "$range"); do
+      commit_title=$(git log --max-count=1 --format=%s "$commit")
+      commit_body=$(git log --max-count=1 --format=%b "$commit")
+
 	  # Check title
-	  if ! git log --max-count=1 --format=%s $commit | grep -qP "$title_regex"; then
-	    if ! git log --max-count=1 --format=%s $commit | grep -qP "$revert_title_regex"; then
+	  if ! echo "$commit_title" | grep -qP "$title_regex"; then
+	    if ! echo "$commit_title" | grep -qP "$revert_title_regex"; then
         echo "ERROR:"
         echo "ERROR: Your push was rejected because the commit"
         echo "ERROR: $commit in ${refname#refs/heads/}"
@@ -69,5 +82,24 @@ while read -r oldrev newrev refname; do
         exit 1
       fi
     fi
-	done
+
+    # Check for duplicate lines in the commit body
+    if echo "$commit_body" | grep -q --line-regexp --regexp='^\(.*\)\n\1$'; then
+        echo "Error: Duplicate lines detected in the extended commit description."
+        exit 1
+    fi
+
+    # Check for external email IDs (excluding allowed domains)
+    if echo "$commit_body" | grep -qP "$external_email_regex" && ! echo "$commit_body" | grep -qP "$allowed_email_regex"; then
+        echo "Error: External email ID detected in the extended commit description. Allowed domains are @ddn.com and @tintri.com."
+        exit 1
+    fi
+
+    # Run a spell checker on the commit description
+    if [ -n "$(echo "$commit_body" | aspell list)" ]; then
+        echo "Error: Spelling mistakes detected in the extended commit description."
+        exit 1
+    fi
+
+  done
 done

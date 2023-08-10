@@ -38,6 +38,11 @@ Revert "RED-1234 ....
 - ` "` **space** + quotes followed by
 - reverted JIRA ticket ref
 
+#### For the extended commit description
+- Duplicate lines in the extended commit description.
+- External email IDs outside of the allowed domains (@ddn.com and @tintri.com).
+- Spelling mistakes using aspell.
+
 ## Troubleshooting
 ![Error message](doc/error_msg.png "Error message shown commit message is not compliant")
 
